@@ -1,163 +1,160 @@
-{% layout "template.liquid" %}
+{% layout 'template.liquid' %}
 <div class="page-width container">
   <div class="product-main-section">
     <div class="product-info">
       <div class="product-top">
-{% block content %}
- <div class="product-title">
+        {% block content %}
+        <div class="product-title">
           <h1 class="title">{{ product.title | capitalize }}</h1>
         </div>
- <div class="product-description">
+        <div class="product-description">
           <p>{{ product.description }}</p>
         </div>
-{% endblock %}
- </div>
-{% block vendor %}
- <div class="product-vendor">
+        {% endblock %}
+      </div>
+      {% block vendor %}
+      <div class="product-vendor">
         <p><strong>Vendor:</strong> {{ product.vendor }}</p>
       </div>
-{% endblock %}
+      {% endblock %}
 
-{% block type %}
-<div class="product-type">
+      {% block type %}
+      <div class="product-type">
         <p><strong>Type:</strong> {{ product.type }}</p>
       </div>
-{% endblock %}
+      {% endblock %}
 
-{% block tags %}
-    <div class="product-tags">
+      {% block tags %}
+      <div class="product-tags">
         <p><strong>Tags:</strong> {{ product.tags | join: ', ' }}</p>
       </div>
-{% endblock %}
+      {% endblock %}
 
-{% block price %}
- <div class="product-price">
+      {% block price %}
+      <div class="product-price">
         <p><strong>Price:</strong> ${{ product.price | money }}</p>
       </div>
-{% endblock %}
+      {% endblock %}
 
-{% block compare_at_price %}
-  {% if product.compare_at_price > product.price %}
+      {% block compare_at_price %}
+      {% if product.compare_at_price > product.price %}
         <div class="product-compare-price">
           <p><strong>Compare At Price:</strong> ${{ product.compare_at_price | money }}</p>
-        
       {% endif %}
- </div>
-{% endblock %}
-
-{% block variants %}
- <div class="product-size">
-        <h2>Available Sizes:</h2>
-        <ul>
-          {% for variant in product.variants %}
-            <li>
-              <strong>{{ variant.title }}</strong> - ${{ variant.price | money }}
-              {% if variant.available %}
-                (Available)
-                
-              {% else %}
-                (Sold Out)
-              {% endif %}
-            </li>
-          {% endfor %}
-        </ul>
-      </div>
-{% endblock %}
-{% block sku %}
-
-      <div class="product-sku">
-        <p>SKU: {{ product.sku }}</p>
-      </div>
-{% endblock %}
-<div class="crt-main-button"><button class="add-to-cart" data-variant-id="{{ variant.id }}">Add to Cart</button></div>
-</div>
-{% block images %}
-<div class="product-image">
-      <div class="product-image-sub">
-        {% for image in product.images %}
-         <img src="{{ '/public/images/bottom_view.png' | asset_url }}" alt="Bottom View" />
-        {% endfor %}
-      </div>
     </div>
-{% endblock %}
-</div>
-</div>
+    {% endblock %}
 
+    {% block variants %}
+    <div class="product-size">
+      <h2>Available Sizes:</h2>
+      <ul>
+        {% for variant in product.variants %}
+          <li>
+            <strong>{{ variant.title }}</strong> - ${{ variant.price | money }}
+            {% if variant.available %}
+              (Available)
+
+            {% else %}
+              (Sold Out)
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endblock %}
+    {% block sku %}
+
+    <div class="product-sku">
+      <p>SKU: {{ product.sku }}</p>
+    </div>
+    {% endblock %}
+    <div class="crt-main-button">
+      <button class="add-to-cart" data-variant-id="{{ variant.id }}">Add to Cart</button>
+    </div>
+  </div>
+  {% block images %}
+  <div class="product-image">
+    <div class="product-image-sub">
+      {% for image in product.images %}
+        <img src="{{ '/public/images/bottom_view.png' | asset_url }}" alt="Bottom View">
+      {% endfor %}
+    </div>
+  </div>
+  {% endblock %}
+</div>
 
 <style>
-.product-main-section {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-}
-.product-info {
-    width: 46%;
-}
-.product-image {
-    width: 46%;
-}
-.product-image-sub {
-    width: 100%;
-    min-height: 500px;
-}
-.product-image-sub img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-.product-title h1 {
-    font-weight: 600;
-}
-.product-size h2 {
-    font-weight: 600;
-}
-.crt-main-button button.add-to-cart {
-    width: 80%;
-    height: 40px;
-    background: #222;
-    color: #fff;
-    border: 0px;
-    font-size: 16px;
-    font-weight: 600;
-}
-.crt-main-button button.add-to-cart:hover {
-   
-    background: #fff;
-    color: #222;
-}
+  .product-main-section {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: space-between;
+  }
+  .product-info {
+      width: 46%;
+  }
+  .product-image {
+      width: 46%;
+  }
+  .product-image-sub {
+      width: 100%;
+      min-height: 500px;
+  }
+  .product-image-sub img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+  }
+  .product-title h1 {
+      font-weight: 600;
+  }
+  .product-size h2 {
+      font-weight: 600;
+  }
+  .crt-main-button button.add-to-cart {
+      width: 80%;
+      height: 40px;
+      background: #222;
+      color: #fff;
+      border: 0px;
+      font-size: 16px;
+      font-weight: 600;
+  }
+  .crt-main-button button.add-to-cart:hover {
+
+      background: #fff;
+      color: #222;
+  }
 </style>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.add-to-cart').forEach(function(button) {
-    button.addEventListener('click', function() {
-      var variantId = this.getAttribute('data-variant-id');
-      fetch('/cart/add.js', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          id: variantId,
-          quantity: 1
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.add-to-cart').forEach(function(button) {
+      button.addEventListener('click', function() {
+        var variantId = this.getAttribute('data-variant-id');
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            id: variantId,
+            quantity: 1
+          })
         })
-      })
-      .then(response => response.json())
-      .then(data => {
-        // Check if the response contains item details
-        if (data.id && data.key) {
-          // Log success message to the console
-          console.log('Product successfully added to cart:', data);
-        } else {
-          console.error('Unexpected response:', data);
-        }
-      })
-      .catch(error => {
-        console.error('Error adding product to cart:', error);
+        .then(response => response.json())
+        .then(data => {
+          // Check if the response contains item details
+          if (data.id && data.key) {
+            // Log success message to the console
+            console.log('Product successfully added to cart:', data);
+          } else {
+            console.error('Unexpected response:', data);
+          }
+        })
+        .catch(error => {
+          console.error('Error adding product to cart:', error);
+        });
       });
     });
   });
-});
-
-
 </script>
