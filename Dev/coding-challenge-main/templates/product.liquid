@@ -1,0 +1,78 @@
+{% layout "template.liquid" %}
+
+{% block content %}
+  <h1>{{ product.title | capitalize }}</h1>
+  <p>{{ product.description }}</p>
+{% endblock %}
+
+{% block vendor %}
+  <p><strong>Vendor:</strong> {{ product.vendor }}</p>
+{% endblock %}
+
+{% block type %}
+  <p><strong>Type:</strong> {{ product.type }}</p>
+{% endblock %}
+
+{% block tags %}
+  <p><strong>Tags:</strong> {{ product.tags | join: ', ' }}</p>
+{% endblock %}
+
+{% block price %}
+  <p><strong>Price:</strong> ${{ product.price | money }}</p>
+{% endblock %}
+
+{% block compare_at_price %}
+  {% if product.compare_at_price > product.price %}
+    <p><strong>Compare At Price:</strong> ${{ product.compare_at_price | money }}</p>
+  {% endif %}
+{% endblock %}
+
+{% block variants %}
+  <h2>Available Sizes:</h2>
+  <ul>
+    {% for variant in product.variants %}
+      <li>
+        <strong>{{ variant.title }}</strong> - ${{ variant.price | money }}
+        {% if variant.available %}
+          (Available)
+        {% else %}
+          (Sold Out)
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+
+{% block images %}
+  <h2>Product Images:</h2>
+ <img src="{{ '/public/images/bottom_view.png' | asset_url }}" alt="Bottom View" />
+
+{% endblock %}
+<style>
+.product-main-section {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+}
+.product-info {
+    width: 46%;
+}
+.product-image {
+    width: 46%;
+}
+.product-image-sub {
+    width: 100%;
+    min-height: 500px;
+}
+.product-image-sub img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.product-title h1 {
+    font-weight: 600;
+}
+.product-size h2 {
+    font-weight: 600;
+}
+</style>
